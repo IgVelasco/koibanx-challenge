@@ -1,5 +1,4 @@
-
-const path = require('path');
+const path = require('path')
 
 // import .env variables
 require('dotenv-safe').config({
@@ -9,9 +8,13 @@ require('dotenv-safe').config({
 
 module.exports = {
   mongo: {
-    uri: process.env.NODE_ENV === 'test' ? process.env.MONGO_URI_TESTS : process.env.MONGO_URI,
+    uri:
+      process.env.NODE_ENV === 'test'
+        ? process.env.MONGO_URI_TESTS
+        : process.env.MONGO_URI,
   },
   env: process.env.NODE_ENV,
   port: process.env.PORT,
-  logs: process.env.NODE_ENV === 'production' ? 'combined' : 'dev'
-};
+  logs: process.env.NODE_ENV === 'production' ? 'combined' : 'dev',
+  concurrencyLevels: process.env.QUEUE_CONCURRENCY_LEVEL,
+}
