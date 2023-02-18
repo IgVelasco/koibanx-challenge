@@ -10,7 +10,7 @@ router
   .route('/')
   .post(
     upload.single('file'),
-    [check('mapping').exists()],
+    validationMiddleware.uploadRequest,
     uploadController.upload
   )
 
