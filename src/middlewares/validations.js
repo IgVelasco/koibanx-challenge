@@ -1,7 +1,7 @@
 const { check, validationResult } = require('express-validator')
 const httpStatus = require('http-status')
 const APIError = require('../errors/api-error')
-const path = require('path');
+const path = require('path')
 
 exports.uploadRequest = [
   check('mapping').exists(),
@@ -15,11 +15,16 @@ exports.uploadRequest = [
       throw new Error('Invalid file type. Only .xlsx files are allowed')
     }
     return true
-  }),   
+  }),
   (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      next(generateBadRequestError("Errors in the request parameters", errors.array()))
+      next(
+        generateBadRequestError(
+          'Errors in the request parameters',
+          errors.array()
+        )
+      )
     }
     next()
   },
@@ -31,6 +36,6 @@ const generateBadRequestError = (msg, errors) => {
     message: error.message,
     status: httpStatus.BAD_REQUEST,
     stack: error.stack,
-    errors: errors
+    errors: errors,
   })
 }

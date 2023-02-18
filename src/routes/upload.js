@@ -6,7 +6,6 @@ const upload = multer()
 
 const router = express.Router()
 
-
 /**
  * @swagger
  * /api/upload:
