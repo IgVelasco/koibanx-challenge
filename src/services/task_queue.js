@@ -55,7 +55,7 @@ class TaskQueue {
     const headers = rows[0]
     const data = []
     const mapping = task.data.mapping
-    
+
     // await new Promise(resolve => setTimeout(resolve, 1000 * 20)); // Used for testing big excels
 
     // Loop through the rows, starting from the second row
@@ -86,7 +86,6 @@ class TaskQueue {
       data.push(item)
     }
 
-    
     excelToJson.status = 'done'
     excelToJson.output = data
     await excelToJson.save()

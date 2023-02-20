@@ -3,10 +3,8 @@ const uploadController = require('../controllers/upload')
 const validationMiddleware = require('../middlewares/validations')
 const multer = require('multer')
 const upload = multer()
-const { check } = require('express-validator')
 
 const router = express.Router()
-
 
 /**
  * @swagger

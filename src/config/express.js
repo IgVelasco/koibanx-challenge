@@ -3,7 +3,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const helmet = require('helmet')
-const swaggerUi = require('swagger-ui-express');
+const swaggerUi = require('swagger-ui-express')
 const swaggerSpecs = require('./swagger')
 const routes = require('../routes')
 const { logs } = require('./vars.js')
@@ -13,8 +13,7 @@ const app = express()
 // request logging. dev: console | production: file
 app.use(morgan(logs))
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs))
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json())
