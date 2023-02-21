@@ -76,7 +76,7 @@ class TaskQueue {
           // TODO: add object support (not asked but NTH)
           const { name, type } = mappingInfo
           // Perform type conversion if necessary
-          try{
+          try {
             if (type === 'number') {
               if (utils.containsOnlyNumbers(value)) {
                 item[name] = parseFloat(value)

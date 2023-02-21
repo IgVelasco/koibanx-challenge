@@ -57,11 +57,11 @@ const excelToJsonSchema = new mongoose.Schema(
  */
 excelToJsonSchema.method({
   async incrementErrorCount() {
-    this.errorCount++;
-    await this.save();
-    return this;
-  }
-});
+    this.errorCount++
+    await this.save()
+    return this
+  },
+})
 
 /**
  * Statics
@@ -95,9 +95,9 @@ excelToJsonSchema.statics = {
       { _id: id },
       { $inc: { errorCount: 1 } },
       { new: true }
-    );
-    return result;
-  }
+    )
+    return result
+  },
 }
 
 /**

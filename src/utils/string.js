@@ -1,3 +1,3 @@
-exports.containsOnlyNumbers = (str) => {
-    return /^(\d+.)*(\d+)$/.test(str);
+exports.containsOnlyNumbers = str => {
+  return /^(\d+.)*(\d+)$/.test(str)
 }

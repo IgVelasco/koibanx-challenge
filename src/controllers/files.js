@@ -15,7 +15,7 @@ exports.getStatus = async (req, res, next) => {
       response = { status }
     }
     res.json(response)
-  } catch(error) {
+  } catch (error) {
     next(error)
   }
 }
