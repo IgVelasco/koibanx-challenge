@@ -36,4 +36,6 @@ const router = express.Router()
  */
 router.get('/:id/status', filesController.getStatus)
 
+router.get('/:id/errors', filesController.getError)
+
 module.exports = router
