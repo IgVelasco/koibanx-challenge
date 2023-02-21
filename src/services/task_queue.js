@@ -3,6 +3,8 @@ const xlsx = require('xlsx')
 const logger = require('../config/logger')
 const { concurrencyLevels } = require('../config/vars')
 const ExcelToJson = require('../models/excel_to_json')
+const ExcelError = require('../models/excel_error')
+const utils = require('../utils/string')
 
 class TaskQueue {
   constructor() {
@@ -46,7 +48,7 @@ class TaskQueue {
   }
 
   async processTask(task) {
-    const excelToJson = await ExcelToJson.get(task.id)
+    let excelToJson = await ExcelToJson.get(task.id)
     excelToJson.status = 'processing'
     await excelToJson.save()
     const workbook = xlsx.read(task.data.file)
@@ -71,15 +73,28 @@ class TaskQueue {
         const mappingInfo = mapping[xlsx.utils.encode_col(j)]
 
         if (mappingInfo) {
-          // TODO: If error: create error and save it, and skip this value
           // TODO: add object support (not asked but NTH)
           const { name, type } = mappingInfo
-
           // Perform type conversion if necessary
-          if (type === 'number') {
-            item[name] = parseFloat(value)
-          } else {
-            item[name] = value
+          try{
+            if (type === 'number') {
+              if (utils.containsOnlyNumbers(value)) {
+                item[name] = parseFloat(value)
+              } else {
+                throw Error(`Value: ${value} is not full number`)
+              }
+            } else {
+              item[name] = value
+            }
+          } catch (error) {
+            await new ExcelError({
+              row: i + 1,
+              column: xlsx.utils.encode_col(j),
+              error: error.message,
+              excelId: task.id,
+            }).save()
+            excelToJson = await excelToJson.incrementErrorCount()
+            item[name] = null
           }
         }
       }
@@ -91,7 +106,6 @@ class TaskQueue {
     await excelToJson.save()
   }
 }
-
 module.exports = TaskQueue
 
 // // Example usage:
