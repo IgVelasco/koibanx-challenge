@@ -77,5 +77,5 @@ const createExcelErrors = async (errors, task) => {
       ...error,
       excelId: task.id,
     }))
-  )
+  );
 }
