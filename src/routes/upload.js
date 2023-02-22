@@ -8,9 +8,17 @@ const router = express.Router()
 
 /**
  * @swagger
+ * tags:
+ *   - name: Upload
+ *     description: Endpoints related to upload
+ */
+
+/**
+ * @swagger
  * /api/upload:
  *   post:
  *     summary: Uploads an Excel file with mapping and returns task ID for processing
+ *     tags: [Upload]
  *     requestBody:
  *       content:
  *         multipart/form-data:
@@ -22,24 +30,17 @@ const router = express.Router()
  *                 format: binary
  *               mapping:
  *                 type: object
- *                 properties:
+ *                 description: Mapping JSON of the xlsx columns
+ *                 example:
  *                   A:
- *                     type: object
- *                     properties:
- *                       name:
- *                         type: string
- *                       type:
- *                         type: string
+ *                     name: name
+ *                     type: string
  *                   B:
- *                     type: object
- *                     properties:
- *                       name:
- *                         type: string
- *                       type:
- *                         type: string
- *                 required:
- *                   - A
- *                   - B
+ *                     name: age
+ *                     type: number
+ *               callbackUrl:
+ *                 type: string
+ *                 description: URL to send task completion notification to
  *     responses:
  *       200:
  *         description: Task ID for processing the uploaded file
@@ -78,6 +79,7 @@ const router = express.Router()
  *                         type: string
  *                         example: body
  */
+
 router
   .route('/')
   .post(
