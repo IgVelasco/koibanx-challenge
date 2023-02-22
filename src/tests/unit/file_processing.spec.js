@@ -2,8 +2,6 @@ const { expect } = require('chai')
 const { processValue } = require('../../services/file_processing') // import the 'utils' module used in the code
 
 describe('processValue function', () => {
-  let containsOnlyNumbersStub
-
   //   before(() => {
   //   })
 
