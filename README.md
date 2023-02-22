@@ -8,6 +8,7 @@ To run this project, you will need the following:
 
 - Node.js version: v19.0.1
 - NPM version: 8.19.2
+- Docker (20.10 was used on the development)
 
 ## Getting Started
 
@@ -25,6 +26,12 @@ cp .env.example .env
 ```
 
 ## Running Locally
+
+Run database:
+```bash
+docker-compose up -d
+```
+
 Install dependencies:
 ```bash
 npm install
