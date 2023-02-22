@@ -65,7 +65,7 @@ exports.processTask = async task => {
 
   excelToJson.status = 'done'
   excelToJson.output = data
-  excelToJson.errors = errors.length
+  excelToJson.errorCount = errors.length
   await excelToJson.save()
 }
 
