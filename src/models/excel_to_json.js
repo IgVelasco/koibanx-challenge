@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 const httpStatus = require('http-status')
+const axios = require('axios')
+
 const APIError = require('../errors/api-error')
+const logger = require('../config/logger')
+
+const INITIAL_STATUS = 'pending'
 
 const mappingSchema = new mongoose.Schema({
   name: {
@@ -35,6 +40,7 @@ const excelToJsonSchema = new mongoose.Schema(
       default: 'pending',
     },
     errorCount: { type: Number, default: 0 },
+    callbackUrl: { type: String },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },
@@ -64,6 +70,31 @@ excelToJsonSchema.method({
 })
 
 /**
+ * Pre's
+ */
+excelToJsonSchema.pre('save', async function () {
+  if (this.isModified('status')) {
+    const newStatus = this.status // new value
+    if (newStatus !== INITIAL_STATUS && this.callbackUrl) {
+      logger.info(`Status changed to ${newStatus}`)
+      const options = {
+        method: 'POST',
+        url: 'http://httpbin.org/post',
+        headers: { 'Content-Type': 'application/json' },
+        data: { id: this._id, status: this.status },
+      }
+      try {
+        const response = await axios.request(options)
+        logger.info(`Information sent to callback:`)
+        logger.info(JSON.stringify(response.data))
+      } catch (error) {
+        logger.error(error)
+      }
+    }
+  }
+})
+
+/**
  * Statics
  */
 excelToJsonSchema.statics = {
@@ -89,14 +120,6 @@ excelToJsonSchema.statics = {
       message: 'Excel data does not exist',
       status: httpStatus.NOT_FOUND,
     })
-  },
-  async incrementErrorCount(id) {
-    const result = await this.findOneAndUpdate(
-      { _id: id },
-      { $inc: { errorCount: 1 } },
-      { new: true }
-    )
-    return result
   },
 }
 
